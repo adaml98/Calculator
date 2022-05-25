@@ -36,7 +36,7 @@ function mouseOver(divName) {
 //HTML CALCULATOR
 const numbers = document.querySelector("#numbers");
 for (i=1; i<10;i++){
-    const div = document.createElement("div");
+    const div = document.createElement("button");
     div.textContent = i;
     numbers.appendChild(div);
     div.style.cssText = `height: 225px; width: 225px; margin: 5px; background-color: grey;
@@ -46,12 +46,14 @@ for (i=1; i<10;i++){
 
 //OPERATORS
 
-const addDiv = document.querySelector("#add");
-const subtractDiv = document.querySelector("#subtract");
-const multiplyDiv = document.querySelector("#multiply");
-const divideDiv = document.querySelector("#divide");
+const addButton = document.querySelector("#add");
+const subtractButton = document.querySelector("#subtract");
+const multiplyButton = document.querySelector("#multiply");
+const divideButton = document.querySelector("#divide");
+const equalButton = document.querySelector("#equal");
 
-mouseOver(addDiv);
-mouseOver(subtractDiv);
-mouseOver(multiplyDiv);
-mouseOver(divideDiv);
+mouseOver(addButton);
+mouseOver(subtractButton);
+mouseOver(multiplyButton);
+mouseOver(divideButton);
+mouseOver(equalButton);

@@ -25,7 +25,8 @@
     width: 1000px;
     border: solid black;
     background-color: white;
-    
+    font-size: 190px;
+    text-align: right;
 }
 #numberpad{
     display: flex;
@@ -57,7 +58,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 18%;
+    height: 15%;
     width: 225px;
     margin: 5px;
     background-color: grey;

@@ -46,12 +46,14 @@ for (i=1; i<10;i++){
 
 //OPERATORS
 
+const clearButton = document.querySelector("#clear");
 const addButton = document.querySelector("#add");
 const subtractButton = document.querySelector("#subtract");
 const multiplyButton = document.querySelector("#multiply");
 const divideButton = document.querySelector("#divide");
 const equalButton = document.querySelector("#equal");
 
+mouseOver(clearButton);
 mouseOver(addButton);
 mouseOver(subtractButton);
 mouseOver(multiplyButton);

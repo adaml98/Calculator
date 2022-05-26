@@ -30,23 +30,34 @@ function mouseOver(divName) {
         divName.style.backgroundColor = "grey";
     });
 } 
-
+let displayValue = 0;
+let secondValue = 0;
+let finalValue = 0;
 
 
 //HTML CALCULATOR
 const numbers = document.querySelector("#numbers");
-for (i=1; i<10;i++){
+const screen = document.querySelector("#screen");
+for (i=0; i<10;i++){
     const div = document.createElement("button");
     div.textContent = i;
+    div.value = i;
     numbers.appendChild(div);
-    div.style.cssText = `height: 225px; width: 225px; margin: 5px; background-color: grey;
+    div.style.cssText = `height: 170px; width: 230px; margin: 5px; background-color: grey;
         font-size: 90px; display:flex; align-items:center; justify-content: center;`;
     mouseOver(div);
+    div.addEventListener("click", function(event){
+        displayValue += div.value;
+        screen.textContent = displayValue.slice(1);
+    });
 };
+
+
+//ADD VALUES TO SCREEN
 
 //OPERATORS
 
-const clearButton = document.querySelector("#clear");
+const clearButton = document.querySelector("#clear"); //TO DO Make clear button change from AC ce etc.
 const addButton = document.querySelector("#add");
 const subtractButton = document.querySelector("#subtract");
 const multiplyButton = document.querySelector("#multiply");

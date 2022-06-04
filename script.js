@@ -1,7 +1,7 @@
 //main functions
 
 function add(a, b){
-    return a + b;
+    return parseFloat(a) + parseFloat(b);
 }
 
 function subtract(a, b){
@@ -31,8 +31,10 @@ function mouseOver(divName) {
     });
 } 
 let displayValue = 0;
-let secondValue = 0;
+let storedValue = 0;
+//let storedValue2 = 0;
 let finalValue = 0;
+let storedOperator = 0;
 
 
 //HTML CALCULATOR
@@ -52,7 +54,6 @@ for (i=0; i<10;i++){
     });
 };
 
-
 //ADD VALUES TO SCREEN
 
 //OPERATORS
@@ -70,3 +71,118 @@ mouseOver(subtractButton);
 mouseOver(multiplyButton);
 mouseOver(divideButton);
 mouseOver(equalButton);
+
+clearButton.addEventListener("click", function (event) {
+    if (displayValue===0){
+        //storedValue = 0;
+        //finalValue = 0;
+    } else {
+        displayValue = 0;
+        screen.textContent = 0;
+    }
+});
+
+function storeDisplayValue(button){ 
+    button.addEventListener("click", function(event){
+        
+        console.log(finalValue);
+        console.log("before if statement: " + storedValue);
+
+        if (storedOperator == "+") {
+            finalValue = operate(add, storedValue, displayValue);
+            console.log("1:" + storedValue);
+            console.log("2:" + displayValue);
+            console.log(finalValue);
+        } else if (storedOperator == "-") {
+            finalValue = operate(subtract, storedValue, displayValue);
+            //console.log("1:" + storedValue);
+            console.log("2:" + displayValue);
+            console.log(finalValue);
+        } else if (storedOperator == "*") {
+            if (storedValue === 0) { storedValue = 1; };
+            finalValue = operate(multiply, storedValue, displayValue);
+            //console.log("1:" + storedValue);
+            console.log("2:" + displayValue);
+            console.log(finalValue);
+        } else if (storedOperator == "/") {
+            if (storedValue != 0) { finalValue = operate(divide, storedValue, displayValue); };
+            //console.log("1:" + storedValue);
+            console.log("2:" + displayValue);
+            console.log(finalValue);
+        }//else if(storedOperator = 0){storedValue = displayValue};
+        console.log("after if statement: " + storedValue);
+        console.log("------------------------------------");
+        if(button == addButton){
+                storedOperator = "+";
+                //console.log("1:" + storedValue);
+        }else if(button == subtractButton){
+                storedOperator = "-";
+                console.log("1:" + storedValue);
+        }else if(button == multiplyButton){
+                storedOperator = "*";
+                console.log("1:" + storedValue);
+        }else if(button == divideButton){
+                storedOperator = "/";
+                console.log("1:" + storedValue);
+        }
+
+        console.log("before1:" + storedValue);
+        console.log("before2:" + displayValue);
+        if (storedValue === 0) { storedValue = displayValue; };
+        console.log("after1:" + storedValue);
+        console.log("after2:" + displayValue);
+        console.log("finalvalue:" + finalValue);
+        console.log("-----------------------");
+
+        displayValue = finalValue;
+        storedValue = finalValue;
+        screen.textContent = displayValue;
+        displayValue = 0;
+        console.log("end1:" + storedValue);
+        console.log("end2:" + displayValue);
+        console.log("end3:" + finalValue);
+        console.log("-----------------------");
+    
+    })
+};
+
+function calculateValues(button){
+    button.addEventListener("click", function(event){
+            if (storedOperator == "+") {
+                finalValue = operate(add, storedValue, displayValue);
+                //console.log("1:" + storedValue);
+                console.log("2:" + displayValue);
+                console.log(finalValue);
+            } else if (storedOperator == "-") {
+                finalValue = operate(subtract, storedValue, displayValue);
+                //console.log("1:" + storedValue);
+                console.log("2:" + displayValue);
+                console.log(finalValue);
+            } else if (storedOperator == "*") {
+                finalValue = operate(multiply, storedValue, displayValue);
+                //console.log("1:" + storedValue);
+                console.log("2:" + displayValue);
+                console.log(finalValue);
+            } else if (storedOperator == "/") {
+                finalValue = operate(divide, storedValue, displayValue);
+                //console.log("1:" + storedValue);
+                console.log("2:" + displayValue);
+                console.log(finalValue);
+            } 
+            displayValue = finalValue;
+            storedValue = finalValue;
+            screen.textContent = displayValue; // refreshes display value
+    })    
+};
+
+storeDisplayValue(addButton);
+storeDisplayValue(subtractButton);
+storeDisplayValue(multiplyButton);
+storeDisplayValue(divideButton);
+calculateValues(equalButton);
+//calculateValues(addButton);
+
+//console.log(operate(add, 15, 5));
+
+
+//NEED TO CALL calculateValues EVERYTIME an operator button is pressed.

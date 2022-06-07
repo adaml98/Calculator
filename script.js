@@ -1,7 +1,5 @@
-//main functions
-
 function add(a, b){
-    return parseFloat(a) + parseFloat(b);
+    return a + b;
 }
 
 function subtract(a, b){
@@ -21,7 +19,6 @@ function operate(operator, a, b){
 }
 
 //css functions 
-
 function mouseOver(divName) {
     divName.addEventListener("mouseover", () => {
         divName.style.backgroundColor = "white";
@@ -30,16 +27,18 @@ function mouseOver(divName) {
         divName.style.backgroundColor = "grey";
     });
 } 
+
+const values = [];
 let displayValue = 0;
 let storedValue = 0;
 //let storedValue2 = 0;
 let finalValue = 0;
 let storedOperator = 0;
 
-
 //HTML CALCULATOR
 const numbers = document.querySelector("#numbers");
 const screen = document.querySelector("#screen");
+screen.textContent = 0;
 for (i=0; i<10;i++){
     const div = document.createElement("button");
     div.textContent = i;
@@ -50,14 +49,13 @@ for (i=0; i<10;i++){
     mouseOver(div);
     div.addEventListener("click", function(event){
         displayValue += div.value;
-        screen.textContent = displayValue.slice(1);
+        storedValue += div.value; 
+        screen.textContent = parseFloat(displayValue);
     });
 };
 
-//ADD VALUES TO SCREEN
 
 //OPERATORS
-
 const clearButton = document.querySelector("#clear"); //TO DO Make clear button change from AC ce etc.
 const addButton = document.querySelector("#add");
 const subtractButton = document.querySelector("#subtract");
@@ -65,6 +63,7 @@ const multiplyButton = document.querySelector("#multiply");
 const divideButton = document.querySelector("#divide");
 const equalButton = document.querySelector("#equal");
 
+//mouseover button effects
 mouseOver(clearButton);
 mouseOver(addButton);
 mouseOver(subtractButton);
@@ -72,117 +71,95 @@ mouseOver(multiplyButton);
 mouseOver(divideButton);
 mouseOver(equalButton);
 
-clearButton.addEventListener("click", function (event) {
-    if (displayValue===0){
-        //storedValue = 0;
-        //finalValue = 0;
-    } else {
-        displayValue = 0;
-        screen.textContent = 0;
+//CALCULATE 
+
+function calculate(){
+    if (storedOperator === "add") {
+        finalValue = operate(add, values[values.length - 2], values[values.length - 1]); // add to total
+    } else if (storedOperator === "subtract") {
+        finalValue = operate(subtract, values[values.length - 2], values[values.length - 1]);
+    } else if (storedOperator === "divide") { // TO DO  refresh calculator if user tries to divide by zero 
+        if (values[values.length - 1] === 0) {
+            alert("You can't divide by zero!");
+        } else {
+            finalValue = operate(divide, values[values.length - 2], values[values.length - 1]);
+        }
+    } else if (storedOperator === "multiply") {
+        finalValue = operate(multiply, values[values.length - 2], values[values.length - 1]);
     }
-});
+}
 
-function storeDisplayValue(button){ 
+//STORE OPERATOR
+function storeOperator(button){
     button.addEventListener("click", function(event){
-        
-        console.log(finalValue);
-        console.log("before if statement: " + storedValue);
 
-        if (storedOperator == "+") {
-            finalValue = operate(add, storedValue, displayValue);
-            console.log("1:" + storedValue);
-            console.log("2:" + displayValue);
-            console.log(finalValue);
-        } else if (storedOperator == "-") {
-            finalValue = operate(subtract, storedValue, displayValue);
-            //console.log("1:" + storedValue);
-            console.log("2:" + displayValue);
-            console.log(finalValue);
-        } else if (storedOperator == "*") {
-            if (storedValue === 0) { storedValue = 1; };
-            finalValue = operate(multiply, storedValue, displayValue);
-            //console.log("1:" + storedValue);
-            console.log("2:" + displayValue);
-            console.log(finalValue);
-        } else if (storedOperator == "/") {
-            if (storedValue != 0) { finalValue = operate(divide, storedValue, displayValue); };
-            //console.log("1:" + storedValue);
-            console.log("2:" + displayValue);
-            console.log(finalValue);
-        }//else if(storedOperator = 0){storedValue = displayValue};
-        console.log("after if statement: " + storedValue);
-        console.log("------------------------------------");
-        if(button == addButton){
-                storedOperator = "+";
-                //console.log("1:" + storedValue);
-        }else if(button == subtractButton){
-                storedOperator = "-";
-                console.log("1:" + storedValue);
-        }else if(button == multiplyButton){
-                storedOperator = "*";
-                console.log("1:" + storedValue);
-        }else if(button == divideButton){
-                storedOperator = "/";
-                console.log("1:" + storedValue);
+        //stop array getting too big ------ DOESNT WORK 
+        if (values[values.length] > 2){
+            values.shift();
         }
 
-        console.log("before1:" + storedValue);
-        console.log("before2:" + displayValue);
-        if (storedValue === 0) { storedValue = displayValue; };
-        console.log("after1:" + storedValue);
-        console.log("after2:" + displayValue);
-        console.log("finalvalue:" + finalValue);
-        console.log("-----------------------");
+        //add final value to array
+        if (finalValue != 0){
+            values.push(parseFloat(finalValue));
+        }
+        //add display value to array
+        values.push(parseFloat(storedValue));
+        storedValue = 0;
+       
+        calculate();
 
-        displayValue = finalValue;
-        storedValue = finalValue;
-        screen.textContent = displayValue;
+        console.log(values);
+        
+        //Store operator
+        if (button == addButton) {
+            storedOperator = "add";
+        } else if (button == subtractButton) {
+            storedOperator = "subtract";          
+        } else if (button == multiplyButton) {
+            storedOperator = "multiply";
+        } else if (button == divideButton) {
+            storedOperator = "divide";
+        }
+
+        //UPDATE SCREEN
         displayValue = 0;
-        console.log("end1:" + storedValue);
-        console.log("end2:" + displayValue);
-        console.log("end3:" + finalValue);
-        console.log("-----------------------");
-    
+        screen.textContent = finalValue;
     })
+    
 };
 
-function calculateValues(button){
-    button.addEventListener("click", function(event){
-            if (storedOperator == "+") {
-                finalValue = operate(add, storedValue, displayValue);
-                //console.log("1:" + storedValue);
-                console.log("2:" + displayValue);
-                console.log(finalValue);
-            } else if (storedOperator == "-") {
-                finalValue = operate(subtract, storedValue, displayValue);
-                //console.log("1:" + storedValue);
-                console.log("2:" + displayValue);
-                console.log(finalValue);
-            } else if (storedOperator == "*") {
-                finalValue = operate(multiply, storedValue, displayValue);
-                //console.log("1:" + storedValue);
-                console.log("2:" + displayValue);
-                console.log(finalValue);
-            } else if (storedOperator == "/") {
-                finalValue = operate(divide, storedValue, displayValue);
-                //console.log("1:" + storedValue);
-                console.log("2:" + displayValue);
-                console.log(finalValue);
-            } 
-            displayValue = finalValue;
-            storedValue = finalValue;
-            screen.textContent = displayValue; // refreshes display value
-    })    
-};
+storeOperator(addButton);
+storeOperator(subtractButton);
+storeOperator(multiplyButton);
+storeOperator(divideButton);
 
-storeDisplayValue(addButton);
-storeDisplayValue(subtractButton);
-storeDisplayValue(multiplyButton);
-storeDisplayValue(divideButton);
-calculateValues(equalButton);
-//calculateValues(addButton);
+//OPERATE BUTTON
 
-//console.log(operate(add, 15, 5));
+equalButton.addEventListener("click", function(event){
 
+    if (finalValue != 0) {
+        values.push(parseFloat(finalValue));
+    } else {
+        finalValue = parseFloat(displayValue);
+    }
+    //add display value to array
+    values.push(parseFloat(storedValue));
+    storedValue = 0;
+    
+    calculate();
 
-//NEED TO CALL calculateValues EVERYTIME an operator button is pressed.
+    screen.textContent = finalValue;
+})
+
+//CLEAR BUTTON
+clearButton.addEventListener("click", function (event) {
+    if (displayValue === 0){
+        storedValue = 0;
+        finalValue = 0;
+        screen.textContent = displayValue;
+    } else {
+        displayValue = 0;
+        storedValue = 0;
+        screen.textContent = displayValue;
+    }
+});
